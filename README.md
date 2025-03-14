@@ -1,4 +1,7 @@
 # POD5-Toolkit-Terminal-Reality
+
+Click here to download: https://github.com/HeitorSpectre/POD5-Toolkit-Terminal-Reality/releases/tag/1.1
+
 Ferramenta de Extração e Edição de Arquivos .POD 5
 
 Desenvolvedores: Heitor Spectre e Denis (M.I.L Traduções)
