@@ -2,28 +2,6 @@
 
 Click here to download: https://github.com/HeitorSpectre/POD5-Toolkit-Terminal-Reality/releases/tag/1.2
 
-Ferramenta de Extração e Edição de Arquivos .POD 5
-
-Desenvolvedores: Heitor Spectre e Denis (M.I.L Traduções)
-
-Sobre a Ferramenta:
-
-Esta ferramenta foi desenvolvida para extrair, editar e reimportar arquivos de linguagem contidos nos arquivos .POD 5 da Terminal Reality. Foi testada e validada em jogos na versão de PlayStation 3.
-
-Observação
-
-A ferramenta foi projetada especificamente para arquivos .POD 5 e pode não ser compatível com outras versões de arquivos.
-
-Para garantir a segurança dos arquivos originais, é recomendado fazer um backup antes de realizar qualquer alteração.
-
-Contato
-
-Para dúvidas ou suporte, entre em contato com Heitor Spectre (Spectre Games no Youtube) ou Denis (M.I.L Traduções).
-
----------------------------------------------------------------------------------------------------------------------
-
-English Version
-
 POD 5 File Extraction and Editing Tool
 
 Developers: Heitor Spectre and Denis (M.I.L Traduções)
@@ -41,6 +19,28 @@ To ensure the safety of the original files, it is recommended to create a backup
 Contact:
 
 For questions or support, contact Heitor Spectre (Spectre Games on YouTube) or Denis (M.I.L Traduções).
+
+---------------------------------------------------------------------------------------------------------------------
+
+Versão em Português
+
+Ferramenta de Extração e Edição de Arquivos .POD 5
+
+Desenvolvedores: Heitor Spectre e Denis (M.I.L Traduções)
+
+Sobre a Ferramenta:
+
+Esta ferramenta foi desenvolvida para extrair, editar e reimportar arquivos de linguagem contidos nos arquivos .POD 5 da Terminal Reality. Foi testada e validada em jogos na versão de PlayStation 3.
+
+Observação
+
+A ferramenta foi projetada especificamente para arquivos .POD 5 e pode não ser compatível com outras versões de arquivos.
+
+Para garantir a segurança dos arquivos originais, é recomendado fazer um backup antes de realizar qualquer alteração.
+
+Contato
+
+Para dúvidas ou suporte, entre em contato com Heitor Spectre (Spectre Games no Youtube) ou Denis (M.I.L Traduções).
 
 ---------------------------------------------------------------------------------------------------------------------
 
