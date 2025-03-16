@@ -21,7 +21,7 @@ translations = {
          "extracted_folder": "Pasta Extraída:",
          "browse": "Procurar",
          "select": "Selecionar",
-         "export": "Extrair",  # Alterado de "Exportar" para "Extrair"
+         "export": "Extrair",
          "import": "Importar",
          "list_files": "Listar Arquivos",
          "config": "Configurações",
@@ -48,7 +48,7 @@ translations = {
          "extracted_folder": "Extracted Folder:",
          "browse": "Browse",
          "select": "Select",
-         "export": "Extract",  # Alinhado com a alteração para "Extrair"
+         "export": "Extract",
          "import": "Import",
          "list_files": "List Files",
          "config": "Settings",
@@ -75,7 +75,7 @@ translations = {
          "extracted_folder": "Carpeta Extraída:",
          "browse": "Buscar",
          "select": "Seleccionar",
-         "export": "Extraer",  # Alinhado com a alteração
+         "export": "Extraer",
          "import": "Importar",
          "list_files": "Listar Archivos",
          "config": "Configuraciones",
@@ -100,7 +100,7 @@ translations = {
 
 # Mapeamento para nomes de pastas extraídas (sem underscore no final)
 extracted_mapping = {
-    "pt": "_extraído",
+    "pt": "_extraido",  # Alterado para remover o acento
     "en": "_extracted",
     "es": "_extraido"
 }
@@ -113,7 +113,7 @@ language_full_names = {
 }
 full_name_to_code = {v: k for k, v in language_full_names.items()}
 
-# Carregar configuração (idioma)
+# Carregar e salvar configuração (idioma)
 def load_config():
     if os.path.exists(CONFIG_FILE):
         with open(CONFIG_FILE, "r") as f:
@@ -175,9 +175,8 @@ def extract_pod5(input_file, output_dir, lang="pt"):
                     break
                 filename += byte.decode('ascii')
             
-            # Traduzir parte do nome, se necessário
-            if extracted_mapping["pt"] in filename:
-                filename = filename.replace(extracted_mapping["pt"], extracted_mapping[lang])
+            # Mantém o nome original para compatibilidade com o manifesto.
+            # Se necessário, outras adaptações podem ser feitas somente na interface.
             
             # Extrair dados
             f.seek(offset)
@@ -320,7 +319,6 @@ def list_pod_files(input_file):
             size = struct.unpack('<I', f.read(4))[0]
             entries.append((name_off, zsize, offset, size))
             f.seek(f.tell() + entry_size - 16)
-        # Ler os nomes
         for i, (name_off, zsize, offset, size) in enumerate(entries):
             f.seek(names_off + name_off)
             filename = ""
@@ -351,7 +349,6 @@ class POD5ExtractorApp:
         
         self.style = ttk.Style()
         self.style.theme_use("clam")
-        # Configurações de estilo para dark mode
         self.style.configure("TLabel", background="#2e2e2e", foreground="#ffffff")
         self.style.configure("TButton", background="#4a4a4a", foreground="#ffffff")
         self.style.configure("TEntry", fieldbackground="#4a4a4a", foreground="#ffffff")
@@ -359,24 +356,19 @@ class POD5ExtractorApp:
         
         self.current_lang = current_language
         
-        # Variáveis
         self.input_file = tk.StringVar()
         self.extracted_dir = tk.StringVar()
         self.list_file = tk.StringVar()
         
-        # Notebook
         self.notebook = ttk.Notebook(root)
         self.notebook.pack(fill="both", expand=True, padx=10, pady=10)
         
-        # Aba Extração/Importação
         self.tab_main = tk.Frame(self.notebook, bg="#2e2e2e")
         self.notebook.add(self.tab_main, text=translations[self.current_lang]['title'])
         
-        # Aba Listagem de Arquivos
         self.tab_list = tk.Frame(self.notebook, bg="#2e2e2e")
         self.notebook.add(self.tab_list, text=translations[self.current_lang]['list_tab_title'])
         
-        # Aba Configurações
         self.tab_config = tk.Frame(self.notebook, bg="#2e2e2e")
         self.notebook.add(self.tab_config, text=translations[self.current_lang]['config_tab_title'])
         
@@ -384,7 +376,6 @@ class POD5ExtractorApp:
         self.create_list_tab()
         self.create_config_tab()
 
-    # Atualiza textos de todos os widgets conforme o idioma atual
     def update_texts(self):
         lang = self.current_lang
         self.root.title(translations[lang]['title'])
@@ -401,14 +392,12 @@ class POD5ExtractorApp:
         self.notebook.tab(1, text=translations[lang]['list_tab_title'])
         self.notebook.tab(2, text=translations[lang]['config_tab_title'])
 
-    # Função para registrar logs na interface
     def log_message(self, message):
         self.txt_log.config(state="normal")
         self.txt_log.insert("end", message + "\n")
         self.txt_log.see("end")
         self.txt_log.config(state="disabled")
     
-    # Função de callback para atualizar a barra de progresso
     def update_progress(self, value, message=""):
         self.progress_bar["value"] = value
         if message:
@@ -417,7 +406,6 @@ class POD5ExtractorApp:
     
     def create_main_tab(self):
         lang = self.current_lang
-        # Labels e Entradas
         self.lbl_input = tk.Label(self.tab_main, text=translations[lang]['file_label'], bg="#2e2e2e", fg="#ffffff")
         self.lbl_input.grid(row=0, column=0, padx=5, pady=5, sticky="e")
         self.ent_input = tk.Entry(self.tab_main, textvariable=self.input_file, width=50, bg="#4a4a4a", fg="#ffffff")
@@ -432,25 +420,21 @@ class POD5ExtractorApp:
         self.btn_select = ttk.Button(self.tab_main, text=translations[lang]['select'], command=self.browse_extracted)
         self.btn_select.grid(row=1, column=2, padx=5, pady=5)
         
-        # Botões de Extrair e Importar
         self.btn_export = ttk.Button(self.tab_main, text=translations[lang]['export'], command=self.export_files)
         self.btn_export.grid(row=2, column=0, padx=5, pady=10)
         self.btn_import = ttk.Button(self.tab_main, text=translations[lang]['import'], command=self.import_files)
         self.btn_import.grid(row=2, column=2, padx=5, pady=10)
         
-        # Barra de progresso
         self.progress_bar = ttk.Progressbar(self.tab_main, orient="horizontal", length=400, mode="determinate")
         self.progress_bar.grid(row=3, column=0, columnspan=3, padx=5, pady=5)
         self.progress_bar["value"] = 0
         
-        # Área de logs
         self.txt_log = tk.Text(self.tab_main, height=8, bg="#4a4a4a", fg="#ffffff", state="disabled")
         self.txt_log.grid(row=4, column=0, columnspan=3, padx=5, pady=5, sticky="nsew")
         self.tab_main.grid_rowconfigure(4, weight=1)
     
     def create_list_tab(self):
         lang = self.current_lang
-        # Seleção de arquivo POD para listagem
         lbl = tk.Label(self.tab_list, text=translations[lang]['file_label'], bg="#2e2e2e", fg="#ffffff")
         lbl.grid(row=0, column=0, padx=5, pady=5, sticky="e")
         self.ent_list = tk.Entry(self.tab_list, textvariable=self.list_file, width=50, bg="#4a4a4a", fg="#ffffff")
@@ -461,7 +445,6 @@ class POD5ExtractorApp:
         self.btn_list = ttk.Button(self.tab_list, text=translations[lang]['list_files'], command=self.list_files)
         self.btn_list.grid(row=1, column=1, padx=5, pady=5)
         
-        # Treeview para exibir a listagem com scrollbar vertical
         self.tree = ttk.Treeview(self.tab_list, columns=("index", "name", "size", "compressed"), show="headings")
         self.tree.heading("index", text="Index")
         self.tree.heading("name", text="Name")
@@ -473,7 +456,6 @@ class POD5ExtractorApp:
         self.tree.column("compressed", width=80, anchor="center")
         self.tree.grid(row=2, column=0, columnspan=3, padx=5, pady=5, sticky="nsew")
         
-        # Adiciona a barra de rolagem vertical à treeview
         scrollbar = ttk.Scrollbar(self.tab_list, orient="vertical", command=self.tree.yview)
         self.tree.configure(yscrollcommand=scrollbar.set)
         scrollbar.grid(row=2, column=3, sticky="ns")
@@ -485,7 +467,6 @@ class POD5ExtractorApp:
         self.lbl_config_lang = tk.Label(self.tab_config, text=translations[lang]['choose_language'], bg="#2e2e2e", fg="#ffffff")
         self.lbl_config_lang.grid(row=0, column=0, padx=5, pady=5, sticky="e")
         
-        # Utiliza nomes completos dos idiomas no combobox
         self.lang_var = tk.StringVar(value=language_full_names[self.current_lang])
         self.cmb_lang = ttk.Combobox(self.tab_config, textvariable=self.lang_var, state="readonly",
                                      values=list(language_full_names.values()))
@@ -570,10 +551,8 @@ class POD5ExtractorApp:
             return
         try:
             files = list_pod_files(file_path)
-            # Limpar a treeview
             for item in self.tree.get_children():
                 self.tree.delete(item)
-            # Inserir os dados
             for file_info in files:
                 self.tree.insert("", "end", values=(
                     file_info["index"],
@@ -587,13 +566,11 @@ class POD5ExtractorApp:
             self.log_message(f"Erro: {str(e)}")
     
     def apply_config(self):
-        # Converte o nome completo selecionado para a sigla correspondente
         selected_full = self.lang_var.get()
         self.current_lang = full_name_to_code[selected_full]
         global current_language
         current_language = self.current_lang
         save_config(self.current_lang)
-        # Atualiza textos na interface
         self.update_texts()
         self.log_message("Configurações atualizadas.")
 
